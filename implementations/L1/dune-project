@@ -1,0 +1,23 @@
+(lang dune 3.19)
+
+(name L1)
+
+(generate_opam_files true)
+
+(source
+ (github michaelleejl/operational-semantics))
+
+(authors "Michael Lee <mjll2@cam.ac.uk>")
+
+(maintainers "Michael Lee <mjll2@cam.ac.uk>")
+
+(license LICENSE)
+
+(package
+ (name L1)
+ (synopsis "An interpreter for L1")
+ (description "An interpreter for L1, as described in the Part IB Operational Semantics Course")
+ (depends ocaml)
+ )
+
+; See the complete stanza docs at https://dune.readthedocs.io/en/stable/reference/dune-project/index.html
