@@ -7,7 +7,12 @@ There are two interpreters:
 
 Currently, there are only two examples. Please make a PR if you want to add more.
 
-To run the examples
+To build the project, run:
+```bash
+dune build
+```
+
+To run the examples run:
 
 ```bash
 cd bin
