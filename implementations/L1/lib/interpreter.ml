@@ -1,4 +1,5 @@
 open Grammar 
+open Store
 open Utils
 
 let rec step config = match config with
@@ -17,10 +18,10 @@ let rec step config = match config with
  | If(Bool(b), e2, e3)   , s -> if b then e2, s else e3 , s
  | If(e1     , e2, e3)   , s -> (match step (e1, s) with
                                 | e1', s' -> If(e1', e2, e3)   , s')
- | Assign(Loc(l), Int(n)), s -> Skip, Store.update l (fun _ -> Some(n)) s
+ | Assign(Loc(l), Int(n)), s -> Skip, update l n s
  | Assign(Loc(l), e)     , s -> (match step (e, s) with
                                 | e', s' -> Assign(Loc(l), e'), s')
- | Deref(Loc(l))         , s -> Int(Store.find l s), s
+ | Deref(Loc(l))         , s -> Int(get l s), s
  | Skip                  , s -> Skip               , s
  | Seq(Skip, e2)         , s -> e2                 , s
  | Seq(e1  , e2)         , s -> (match step (e1, s) with

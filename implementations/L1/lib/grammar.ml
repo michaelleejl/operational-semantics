@@ -1,3 +1,5 @@
+type store = Store.t
+
 type loc = Loc of int 
 
 type expr = Bool of bool | Int of int 
@@ -8,10 +10,6 @@ type expr = Bool of bool | Int of int
           | Skip 
           | Seq of expr * expr 
           | While of expr * expr
-
-module Store = Map.Make(Int)
-
-type store = int Store.t
 
 type config = expr * store
 
