@@ -28,8 +28,13 @@ let rec step config = match config with
                                 | e1', s' -> Seq(e1', e2), s')
  | While(e1, e2)         , s -> If(e1, Seq(e2, While(e1, e2)), Skip), s
 
- let rec verbose_interpret (e, s) = 
-  if is_val e then (~. (e, s)) else ((~> (e, s)) ; verbose_interpret (step (e, s)))
 
- let rec interpret (e, s) =
-  if is_val e then (~. (e, s)) else interpret (step (e, s))
+ let verbose_interpret (e, s) = 
+  let rec verbose_interpret_i (e, s) = 
+    if is_val e then (~. (e, s)) else ((~> (e, s)) ; verbose_interpret_i (step (e, s)))
+  in print_endline("");  verbose_interpret_i(e, s)
+
+ let interpret (e, s) =
+  let rec interpret_i (e, s) = 
+    if is_val e then (~. (e, s)) else interpret_i (step (e, s))
+  in print_endline("");  interpret_i(e, s)
