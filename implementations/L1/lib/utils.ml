@@ -2,7 +2,6 @@ open Grammar
 open Printf
 open Types 
 open Store
-open Format
 
 exception BadStoreException
 
