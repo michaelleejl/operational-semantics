@@ -13,4 +13,4 @@ let sigma = create_types [Int];;
 
 verbose_interpret (e, s);;
 
-infer e sigma;;
+verbose_infer e sigma;;
