@@ -1,6 +1,7 @@
 open L1
 open Grammar
 open Interpreter
+open Inference
 open Store
 
 let e = (Plus(
@@ -11,4 +12,8 @@ let e = (Plus(
           ))
 let s = create [0];;
 
-verbose_interpret (e, s)
+let sigma = create_types [Int];;
+
+verbose_interpret (e, s);;
+
+verbose_infer e sigma;;
