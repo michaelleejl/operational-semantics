@@ -1,18 +1,22 @@
 open Grammar
+open Context
+open Types 
+open Store
 open Printf
 
 exception BadStoreException
-
-let rec type_to_str (typ: Grammar.t) = match typ with
- | Bool -> "bool"
- | Int -> "int"
- | Ref(t) -> sprintf "%s ref" (type_to_str t)
- | Arrow(t1, t2) -> sprintf "%s -> %s" (type_to_str t1) (type_to_str t2)
-
+exception BadTypeException 
 
 let resolve scope n = List.nth scope n 
 
-let rec expr_to_str_in_scope e scope = match e with 
+let indent n = match n with 
+  | 0 -> ""
+  | n -> let rec indent_i = (function 
+            | 0 -> "  - "
+            | m -> "  " ^ indent_i (m-1)) 
+         in indent_i (n-1)
+
+let rec expr_to_str_in_scope (e: expr) scope = match e with 
    | Bool(b)    -> sprintf "%B" b 
    | Int(n)      -> sprintf "%i" n
    | Plus(e1, e2) -> 
@@ -42,8 +46,17 @@ let expr_to_str e = expr_to_str_in_scope e []
  let config_to_str ((e, s): config) = 
   sprintf "<%s, %s>" (expr_to_str e) (Store.store_to_str s)
 
+let judgement_to_str sigma gamma e t = sprintf "%s ; %s ⊦ %s : %s" (sigma_to_str sigma) (gamma_to_str gamma) (expr_to_str_in_scope e (List.map (fun (x, _) -> x) gamma)) (type_to_str t) 
+
+let sigma_lookup_to_str sigma l t = sprintf "%s: %s ∊ %s "  (loc_to_str l) (type_to_str t) (sigma_to_str sigma) 
+
 let (~>) (c: config) = print_endline (sprintf "%s ->" (config_to_str c))
 let (~.) (c: config) = print_endline (config_to_str c); c 
 
+let (|-) n (sigma, gamma, e, t) = "\n" ^ indent n ^ (judgement_to_str sigma gamma e t)
+let (|=) n (sigma, Loc(l), t) = match t with 
+   | Ref(t) -> "\n" ^ indent n ^ (sigma_lookup_to_str sigma l (Ref t))
+   | _ -> raise BadTypeException
 
+let (|+) n (gamma, x, t) =  "\n" ^ indent n ^ (sprintf "%s: %s ∊ %s "  x (type_to_str t) (gamma_to_str gamma))
 

@@ -1,6 +1,6 @@
-type store = Store.t
+open Types 
 
-type t = Int | Bool | Ref of t | Arrow of t * t 
+type store = Store.t
 
 type loc = Loc of int 
 and param = string 
