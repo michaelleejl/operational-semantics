@@ -27,6 +27,6 @@ let (~.) (c: config) = print_endline (config_to_str c); c
 
 let (|-) n (sigma, e, t) = "\n" ^ indent n ^ (judgement_to_str sigma e t)
 let (|=) n (sigma, Loc(l), t) = match t with 
-   | Ref(t) -> "\n" ^ indent n ^ (sigma_lookup_to_str sigma l t)
+   | Ref(t) -> "\n" ^ indent n ^ (sigma_lookup_to_str sigma l (Ref t))
    | _ -> raise BadTypeException
 

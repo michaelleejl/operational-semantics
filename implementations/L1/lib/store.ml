@@ -25,7 +25,18 @@ let update k v s = IntMap.update k (fun _ -> Some(v)) s
 let loc_to_str (l) = sprintf "l%i" l 
 
 let store_to_str s = 
-  (IntMap.fold (fun k v accum -> accum ^ (sprintf "%s:%i, " (loc_to_str (k)) v)) s "{") ^ "}"
+  let items = (IntMap.fold (fun k v accum ->  (sprintf "%s: %i" (loc_to_str k) v):: accum) s []) in 
+  let rec separated_items = (function 
+    | [] -> []
+    | [i] -> [i]
+    | i::is -> i::", "::(separated_items is)) in 
+  (List.fold_left (^) "{" (separated_items items)) ^ "}"
+
 
 let sigma_to_str s = 
-   (IntMap.fold (fun k v accum -> accum ^ (sprintf "%s:%s, " (loc_to_str (k)) (Types.type_to_str v))) s "{") ^ "}"
+  let items = (IntMap.fold (fun k v accum ->  (sprintf "%s: %s" (loc_to_str k) (Types.type_to_str v)):: accum) s []) in 
+  let rec separated_items = (function 
+    | [] -> []
+    | [i] -> [i]
+    | i::is -> i::", "::(separated_items is)) in 
+  (List.fold_left (^) "{" (separated_items items)) ^ "}"

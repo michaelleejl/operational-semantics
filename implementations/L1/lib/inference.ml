@@ -49,7 +49,7 @@ let rec infer_i (e: expr) (sigma: sigma_t) = match e with
                   let t2 = infer_i e2 sigma in 
                   if (t1 <> Bool || t2 <> Unit) then raise TypeMismatchException
                   else Unit 
-and infer_loc (Loc(l)) sigma = Ref(get_type l sigma)
+and infer_loc (Loc(l)) sigma = get_type l sigma
 
 let infer e sigma = let t = infer_i e sigma in print_endline(judgement_to_str sigma e t)
 
@@ -104,7 +104,7 @@ let rec infer_deriv (e: expr) sigma = match e with
   let typ = proj_type d2 in 
   if (proj_type d1 <> Bool) then raise TypeMismatchException else
   DerivInfer({sigma = sigma; e = e; t = typ}, [d1;d2])
-and infer_deriv_loc (Loc(l): loc) sigma = DerivLoc({sigma=sigma; l=Loc(l); t= Ref(get_type l sigma)})
+and infer_deriv_loc (Loc(l): loc) sigma = DerivLoc({sigma=sigma; l=Loc(l); t= get_type l sigma})
  
 let deriv_to_str d = 
   let rec deriv_to_str_i (d: deriv_tree) n = match d with

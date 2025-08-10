@@ -12,7 +12,7 @@ let e = (Plus(
           ))
 let s = create [0];;
 
-let sigma = create_types [Int];;
+let sigma = create_types [Ref(Int)];;
 
 verbose_interpret (e, s);;
 
